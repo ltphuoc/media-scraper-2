@@ -66,7 +66,13 @@ This single command will:
 1. Build and start all containers
 2. Wait until the API `/health` is live
 3. Run **smoke** and **load** tests
-4. Generate HTML performance reports
+4. Generate JSON performance reports
+
+If you want to start all services without running tests and reports:
+
+```bash
+make up
+```
 
 After completion:
 
