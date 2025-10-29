@@ -1,0 +1,73 @@
+# =====================================================
+# 🔒 GLOBAL GITIGNORE FOR MEDIA SCRAPER MONOREPO
+# =====================================================
+
+# === Node / PNPM ===
+node_modules/
+.pnpm-store/
+.npm/
+.npmrc
+*.log
+*.tmp
+*.pid
+*.seed
+*.bak
+
+# === Build artifacts ===
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# === Environment & Config ===
+.env
+.env.*
+!.env.example
+.DS_Store
+
+# === Docker ===
+docker-compose.override.yml
+docker-compose.local.yml
+*.env.docker
+*.tar
+*.img
+
+# === Prisma ===
+prisma/dev.db
+prisma/migrations/
+prisma/generated/
+
+# === Artillery ===
+report.json
+artillery-report.json
+load/*.json
+load/*.html
+
+# === IDE / Editor ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*.iml
+
+# === Logs & Cache ===
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache/
+.tmp/
+out/
+
+# === OS / Misc ===
+Thumbs.db
+Desktop.ini
+
+# === Project-specific ===
+backend/.env
+landing/.env
+backend/dist/
+landing/.next/
+.next/

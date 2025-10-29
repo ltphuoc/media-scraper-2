@@ -1,0 +1,22 @@
+FROM node:20-bookworm-slim AS builder
+WORKDIR /app
+
+COPY package.json pnpm-lock.yaml* ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
+
+COPY . .
+
+RUN npx prisma generate && pnpm build
+
+FROM node:20-bookworm-slim
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends openssl curl && rm -rf /var/lib/apt/lists/*
+
+ENV NODE_ENV=production
+RUN npm install -g pnpm
+
+COPY --from=builder /app ./
+
+EXPOSE 3000
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/server.js"]

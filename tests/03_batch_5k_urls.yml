@@ -1,0 +1,32 @@
+config:
+  target: 'http://localhost:4000'
+  phases:
+    - name: batch_10urls
+      duration: 1
+      arrivalRate: 500 # 50rps * 10s = 500 requests
+  defaults:
+    headers:
+      Content-Type: 'application/json'
+      Authorization: 'Basic YWRtaW46YWRtaW4='
+  plugins:
+    metrics-by-endpoint: false
+
+scenarios:
+  - name: 'Batch requests with 10 URLs each'
+    flow:
+      - post:
+          url: '/scrape'
+          json:
+            urls:
+              - 'https://picsum.photos'
+              - 'https://www.youtube.com/@t3dotgg'
+              - 'https://sens-vn.com/'
+              - 'https://www.imdb.com/'
+              - 'https://www.facebook.com/watch'
+              - 'https://www.youtube.com/watch?v=rVdR0_Ujgq4'
+              - 'https://www.momos.com/'
+              - 'https://www.w3schools.com/html/html5_video.asp'
+              - 'https://www.tiktok.com/'
+              - 'https://www.tiktok.com/@ltphuoc25'
+          expect:
+            - statusCode: 202
