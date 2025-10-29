@@ -39,24 +39,13 @@ make up
 
 ### 🚀 Step 3 — Trigger Scraping via API (smoke test)
 
+#### 1️⃣ Trigger scraping request
+
 ```bash
-curl -u admin:admin -X POST http://localhost:4000/scrape   -H "Content-Type: application/json"   -d '{"urls":["https://wikipedia.org","https://developer.mozilla.org"]}'
+curl -u admin:admin -X POST http://localhost:4000/scrape   -H "Content-Type: application/json"   -d '{"urls":["https://www.tiktok.com/","https://www.momos.com/"]}'
 ```
 
-**Purpose:**
-
-- Test `/scrape` endpoint with Basic Auth.
-- Validate input via Zod.
-- Receive `HTTP 202 Accepted` instantly (as jobs are queued asynchronously).
-
-**Demonstrates:**
-✅ Non-blocking Fastify API.
-✅ Instant 202 response even under heavy concurrency.
-✅ Queue-first architecture (API does not scrape directly).
-
----
-
-### 🧠 Step 4 — Run Smoke Test
+# 2️⃣ Run smoke test
 
 ```bash
 make smoke
@@ -64,15 +53,19 @@ make smoke
 
 **Purpose:**
 
+- Test `/scrape` endpoint with Basic Auth.
 - Validate API correctness and queue connection.
-- Ensure `/scrape` works before load testing.
+- Receive `HTTP 202 Accepted` instantly (as jobs are queued asynchronously).
 
 **Demonstrates:**
+✅ Non-blocking Fastify API.
+✅ Instant 202 response even under heavy concurrency.
+✅ Queue-first architecture (API does not scrape directly).
 ✅ System readiness & health under low load.
 
 ---
 
-### 🔥 Step 5 — Run Load Tests (Performance Validation)
+### 🔥 Step 4 — Run Load Tests (Performance Validation)
 
 ```bash
 make load
@@ -99,7 +92,7 @@ load/report-batch.json
 
 ---
 
-### 📊 Step 6 — View Performance Metrics
+### 📊 Step 5 — View Performance Metrics
 
 **Look for:**
 
@@ -125,7 +118,7 @@ http://localhost:3000/dashboard/metrics
 
 ---
 
-### 🧩 Step 7 — View Scraped Results on Landing Page
+### 🧩 Step 6 — View Scraped Results on Landing Page
 
 Open:
 
