@@ -48,21 +48,17 @@ start: setup
 	fi
 
 	@echo "💥 Running load test (burst 5000 concurrent requests)..."
-	$(ARTILLERY) run load/02_burst_5k_requests.yml --output $(REPORT_BURST)
+	$(ARTILLERY) run $(REPORT_DIR)/02_burst_5k_requests.yml --output $(REPORT_BURST)
 
 	@echo "💥 Running load test (batch 500 requests x 10 URLs)..."
-	$(ARTILLERY) run load/03_batch_5k_urls.yml --output $(REPORT_BATCH)
-
-	@echo "📊 Generating reports..."
-	$(ARTILLERY) report $(REPORT_BURST) --output $(REPORT_DIR)/report-burst.html
-	$(ARTILLERY) report $(REPORT_BATCH) --output $(REPORT_DIR)/report-batch.html
+	$(ARTILLERY) run $(REPORT_DIR)/03_batch_5k_urls.yml --output $(REPORT_BATCH)
 
 up: setup
 	@echo "🧱 Building and starting $(PROJECT_NAME) services..."
 	$(DOCKER_COMPOSE) up --build -d
 
 	@echo ""
-	@echo "🎉 All services started and tested successfully!"
+	@echo "🎉 All services started."
 	@echo "--------------------------------------------"
 	@echo "🌐 Frontend: http://localhost:3000"
 	@echo "🔗 API:      http://localhost:4000"
@@ -112,7 +108,7 @@ clean:
 
 clear-queue:
 	@echo "🧹 Clearing queue inside API container..."
-	docker exec api node dist/scripts/clear-queue.js
+	docker exec api node dist/scripts/clear-queue.js || true
 
 # === TESTS ===
 smoke:

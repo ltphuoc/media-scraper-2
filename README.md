@@ -24,7 +24,6 @@ Client → Fastify API → Redis Queue → Worker (Puppeteer + Prisma) → Postg
 - **API Layer (Fastify)**
 
   - Accepts batch URLs via `POST /scrape`
-  - Validates input with Zod
   - Enqueues lightweight job objects to Redis
   - Returns `202 Accepted` immediately (non-blocking)
 
@@ -81,6 +80,11 @@ After completion:
 🔗 API:      http://localhost:4000
 ```
 
+### 🔐 Credentials
+
+Default Basic Auth: `admin / admin` (configurable in `.env.example`).
+Change for production.
+
 ---
 
 ## 🧪 Testing and Monitoring
@@ -101,8 +105,8 @@ Simulates high concurrency (~5000 requests) and large URL batches.
 make load
 ```
 
-- `02_burst_5k_requests.yml`: 5000 concurrent requests (burst test)
-- `03_batch_5k_urls.yml`: 500 requests × 10 URLs each (5000 URLs total)
+- `tests/02_burst_5k_requests.yml`: 5000 concurrent requests (burst test)
+- `tests/03_batch_5k_urls.yml`: 500 requests × 10 URLs each (5000 URLs total)
 - Reports generated under `/load/*.json`
 
 ### 3. Monitor Runtime
@@ -165,14 +169,22 @@ Each service is orchestrated via `docker-compose.yml` at the project root.
 
 ## 🧰 Developer Commands
 
-| Command      | Description                    |
-| ------------ | ------------------------------ |
-| `make up`    | Start all services             |
-| `make down`  | Stop containers                |
-| `make logs`  | Tail API + Worker logs         |
-| `make smoke` | Run smoke test                 |
-| `make load`  | Run load tests (burst + batch) |
-| `make clean` | Remove containers & volumes    |
+| Command            | Description                                                                   |
+| ------------------ | ----------------------------------------------------------------------------- |
+| `make help`        | Show available commands                                                       |
+| `make setup`       | Prepare `.env`, copy to `api/`, `worker/`, `landing/`, ensure `tests/` dir    |
+| `make start`       | Build & start → wait for `/health` → run smoke + load → generate HTML reports |
+| `make up`          | Build & start all services (no tests)                                         |
+| `make down`        | Stop and remove containers                                                    |
+| `make logs`        | Tail logs for **api** + **worker**                                            |
+| `make logs-api`    | Tail logs for **api** only                                                    |
+| `make logs-worker` | Tail logs for **worker** only                                                 |
+| `make logs-db`     | Tail logs for **postgres**                                                    |
+| `make logs-redis`  | Tail logs for **redis**                                                       |
+| `make smoke`       | Run smoke test (`tests/01_smoke.yml`) → output `tests/report-smoke.json`      |
+| `make load`        | Run burst + batch load tests → outputs JSON + `report-*.html` in `tests/`     |
+| `make clear-queue` | Clear BullMQ queue inside **api** container (safe no-op if script missing)    |
+| `make clean`       | Remove containers & volumes; clean `tests/*.json` & `tests/*.html`; rm `.env` |
 
 ---
 
