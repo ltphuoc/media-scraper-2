@@ -28,12 +28,12 @@ make up
 
 ### 🌐 Step 2 — Check the Core URLs
 
-| URL                                                                           | Purpose            | Description                                                                                               |
-| ----------------------------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
-| [http://localhost:4000/health](http://localhost:4000/health)                  | 🩺 Health Check    | Confirms that API, PostgreSQL, and Redis are connected. Returns `{ ok: true }`.                           |
-| [http://localhost:4000/metrics](http://localhost:4000/metrics)                | 📈 System Metrics  | Shows CPU %, memory, Redis latency, event-loop lag, and queue stats (waiting, active, completed, failed). |
-| [http://localhost:3000](http://localhost:3000)                                | 🖼️ Landing Page    | Displays scraped images/videos using `/media` API. Supports pagination, filtering, and search.            |
-| [http://localhost:3000/dashboard/metrics](http://localhost:4000/admin/queues) | 🔄 Queue Dashboard | Visualizes BullMQ jobs (waiting, active, completed, failed). Optional but great for demo.                 |
+| URL                                                               | Purpose            | Description                                                                                               |
+| ----------------------------------------------------------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
+| [health api url](http://localhost:4000/health)                    | 🩺 Health Check    | Confirms that API, PostgreSQL, and Redis are connected. Returns `{ ok: true }`.                           |
+| [metrics api url](http://localhost:4000/metrics)                  | 📈 System Metrics  | Shows CPU %, memory, Redis latency, event-loop lag, and queue stats (waiting, active, completed, failed). |
+| [frontend site](http://localhost:3000)                            | 🖼️ Landing Page    | Displays scraped images/videos using `/media` API. Supports pagination, filtering, and search.            |
+| [frontend monitors site](http://localhost:4000/dashboard/metrics) | 🔄 Queue Dashboard | Visualizes BullMQ jobs (waiting, active, completed, failed). Optional but great for demo.                 |
 
 ---
 
