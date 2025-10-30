@@ -153,6 +153,25 @@ Result:
 
 ---
 
+## 🔄 Queue Reliability & Trade-offs
+
+The API returns `202 Accepted` immediately and then attempts to enqueue each URL to Redis (BullMQ).
+This keeps p99 latency low (<10s) on **1 CPU / 1 GB RAM**, even under ~5000 concurrent requests, because the request is not blocked by scraping or database work.
+
+Trade-off: we currently prioritize latency over durability.
+
+- There is **no write-ahead persistence** before enqueue.
+- There is **no automatic retry** if Redis / BullMQ is temporarily unavailable.
+- This means a request can be "accepted" (202) but its jobs may be dropped if queue insertion fails at that moment.
+
+Production mode can switch to a durable path:
+
+1. Store URLs in Postgres with status `PENDING`.
+2. Enqueue to Redis asynchronously.
+3. If enqueue fails, mark those URLs as `ENQUEUE_FAILED` for retry / status checks.
+
+That production mode adds DB I/O to the request path (slightly higher tail latency) but prevents silent data loss.
+
 ## 📦 Docker Configuration
 
 | Service    | CPU     | RAM    | Description                 |

@@ -40,17 +40,22 @@ start: setup
 	done'
 
 	@echo "🧪 [3/3] Running smoke test..."
-	@if $(ARTILLERY) run tests/smoke-test.yml; then \
+	@if $(ARTILLERY) run $(REPORT_DIR)/01_smoke.yml; then \
   	echo "✅ Smoke test passed!"; \
 	else \
   	echo "❌ Smoke test failed!"; \
   	exit 1; \
 	fi
 
-	@echo "💥 Running load test (burst 5000 concurrent requests)..."
+	@echo "💥 Running burst load test (~5000 concurrent requests)..."
 	$(ARTILLERY) run $(REPORT_DIR)/02_burst_5k_requests.yml --output $(REPORT_BURST)
 
-	@echo "💥 Running load test (batch 500 requests x 10 URLs)..."
+	@echo "🧹 Clearing queue before next test..."
+	docker exec api node dist/scripts/clear-queue.js || true
+	@echo "⏳ Waiting 5 seconds before next test..."
+	sleep 5
+
+	@echo "💥 Running batch load test (500 requests x 10 URLs)..."
 	$(ARTILLERY) run $(REPORT_DIR)/03_batch_5k_urls.yml --output $(REPORT_BATCH)
 
 up: setup
